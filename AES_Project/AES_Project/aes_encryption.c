@@ -49,19 +49,27 @@ void aes_encrypt(uint8_t* expand_key, uint8_t* plain_text, uint8_t* encrypted_te
 {
 
     /* Initiating */
-    //uint8_t round_number = 0;
-    //add_round_key(&expand_key, &round_number, &state_matrix);
+    uint8_t round_number = 0;
+    add_round_key(&expand_key, &round_number, &plain_text);
 
-    for(uint8_t round_ctr = 0; round_ctr< NUM_ROUNDS; round_ctr++)
+    for(uint8_t round_ctr = 0; round_ctr< NUM_ROUNDS-1; round_ctr++)
     {
-
+        substitute_bytes(&plain_text);
+        shift_rows(&plain_text);
+        mix_columns(&plain_text);
+        add_round_key(&expand_key, &round_number, &plain_text);
     }
+
+    substitute_bytes(&plain_text);
+    shift_rows(&plain_text);
+    add_round_key(&expand_key, &round_number, &plain_text);
 
 }
 
-static void add_round_key(uint8_t* expand_key, uint8_t* round_number, uint8_t* state_matrix)
+static void add_round_key(uint8_t* expand_key, uint8_t* round_number, uint8_t* state_matrix);
 {
 
+    
     if(*round_number > 10)
     {
         return;
@@ -89,31 +97,68 @@ static void substitute_bytes(uint8_t* state_matrix)
 }
 static void shift_rows(uint8_t* state_matrix)
 {
-    uint8_t temp[4][4];
+    uint8_t temp_state_matrix[4][4];
 
-    /* Trzeba przekminić mocniej */
-    for(uint8_t i =0; i< 4; i++)
+    /* Creating a matrix with reordered elements */
+    for(uint8_t i = 0; i< 4; i++)
     {
         for(uint8_t j = 0; j<4; j++)
         {
-            uint8_t row_number = i/4;
-            if(i % 4 == 1) //row 2
-            {
-
-            }
-
-            else if(i % 4 == 2) //row 3
-            {
-
-            }
-
-            else if(i % 4 == 3) //row 4
-            {
-
-            }
+            temp_state_matrix[j][i] = state_matrix[4*i + j ];
         }
-        
     }
 
+    /* Shifting column */
+    for (uint8_t row =1; row<4; row++)
+    {
+        for (uint8_t shift_time = 1; shift_time<row; shift_time++)
+        {
+            rotate_left(temp_state_matrix, row);
+        }
+    }
+
+    uint8_t sub;
+
 }
-static void mix_columns();
+
+static void rotate_left(uint8_t* matrix, uint8_t row)
+{
+    uint8_t sub;
+    sub = matrix[i][3];
+    matrix[row][3] = matrix[row][0];
+    matrix[row][0] = matrix[row][1];
+    matrix[row][1] = matrix[row][2];
+    matrix[row][2] = sub;
+}
+
+static void mix_columns(uint8_t* state_matrix)
+{
+    uint8_t temp_state_matrix[4][4];
+    uint8_t output[16];
+
+    /* Creating a matrix with reordered elements */
+    for(uint8_t i = 0; i< 4; i++)
+    {
+        for(uint8_t j = 0; j<4; j++)
+        {
+            temp_state_matrix[j][i] = state_matrix[4*i + j ];
+        }
+    }
+
+    /* Mixing columns by multiplying state matrix and mix_matrix*/
+    uint8_t ctr = 0;
+    for(uint8_t i = 0; i<4; i++)
+    {
+        for (uint8_t j = 0; j<4; j++)
+        {
+            output[ctr] += pgm_read_byte(&mix_columns_matrix[i][j]) * state_matrix[j][i];
+            ctr++;
+        }
+    }
+
+    /* Rewriting output into state_matrix */
+    for(uint8_t word =0; word>15; word++)
+    {
+        state_matrix[word] = output[word];
+    }
+}
