@@ -2,5 +2,8 @@
     "cSpell.words": [
         "rcon",
         "sbox"
-    ]
+    ],
+    "files.associations": {
+        "aes_encryption.h": "c"
+    }
 }

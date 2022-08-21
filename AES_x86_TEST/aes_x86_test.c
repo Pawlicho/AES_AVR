@@ -1,8 +1,16 @@
-#pragma once
-#include <avr/pgmspace.h>
+
 #include <stdint.h>
 #include <string.h>
-#include "aes_encryption.h"
+#include <stdio.h>
+#include "aes_x86.h"
+
+void myDebugPrint(uint8_t* plain_text)
+{
+    for(uint8_t i = 0; i<16; i++)
+    {
+        printf("\n%u", plain_text[i]);
+    }
+}
 
 void expand_key(uint8_t* key, uint8_t* expanded_key)
 {
@@ -27,11 +35,11 @@ void expand_key(uint8_t* key, uint8_t* expanded_key)
             /* Substituting bytes from sbox */
             for(uint8_t j = 0; j<ROUND_KEY_WORDS_NUMBER; j++) 
             {
-                temp[j] = pgm_read_byte(&sbox[temp[j]]);
+                temp[j] = sbox[temp[j]];
             }
 
             /* "left" vector byte XOR 2^(round_number - 1) */
-            temp[0] ^= pgm_read_byte(&rcon_values[i/ROUND_KEY_WORDS_NUMBER]); //dunno if this operation is even legal
+            temp[0] ^= rcon_values[i/ROUND_KEY_WORDS_NUMBER]; //dunno if this operation is even legal
         }
 
         /* Temp vector XOR last 4 bytes befor i(round) bytes before key end */
@@ -65,7 +73,7 @@ void substitute_bytes(uint8_t* state_matrix)
 {
     for(uint8_t word = 0; word < 16; word++)
     {
-        state_matrix[word] = pgm_read_byte(&sbox[state_matrix[word]]);
+        state_matrix[word] = sbox[state_matrix[word]];
     }
 
 }
