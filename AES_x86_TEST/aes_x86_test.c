@@ -15,7 +15,7 @@ void myDebugPrint(uint8_t* plain_text)
 void expand_key(uint8_t* key, uint8_t* expanded_key)
 {
 
-    uint8_t temp[4];
+    uint8_t temp[4], swap;
 
     /* Initial copy of original 16 bytes of key */
     memcpy(expanded_key, key, ROUND_KEY_WORDS_NUMBER*4);
@@ -30,22 +30,22 @@ void expand_key(uint8_t* key, uint8_t* expanded_key)
         temp[3] = expanded_key[4*i - 1];
 
 
-        if (i % ROUND_KEY_WORDS_NUMBER == 0)
+        if (!(i % ROUND_KEY_WORDS_NUMBER))
         {
             /* Substituting bytes from sbox */
-            for(uint8_t j = 0; j<ROUND_KEY_WORDS_NUMBER; j++) 
-            {
-                temp[j] = sbox[temp[j]];
-            }
+            /* Substituting bytes from sbox */
+            swap = temp[3];
+            temp[3] = sbox[temp[0]];
+            temp[0] = sbox[temp[1]] ^ rcon_values[i/ROUND_KEY_WORDS_NUMBER];
+            temp[1] = sbox[temp[2]];
+            temp[2] = sbox[swap];
 
-            /* "left" vector byte XOR 2^(round_number - 1) */
-            temp[0] ^= rcon_values[i/ROUND_KEY_WORDS_NUMBER]; //dunno if this operation is even legal
         }
 
         /* Temp vector XOR last 4 bytes befor i(round) bytes before key end */
         expanded_key[4*i] = temp[0] ^ expanded_key[4*i - 4*ROUND_KEY_WORDS_NUMBER];
         expanded_key[4*i + 1] = temp[1] ^ expanded_key[4*i - 4*ROUND_KEY_WORDS_NUMBER + 1];
-        expanded_key[4*i + 2] = temp[2] ^ expanded_key[4*i - 4*ROUND_KEY_WORDS_NUMBER + 1];
+        expanded_key[4*i + 2] = temp[2] ^ expanded_key[4*i - 4*ROUND_KEY_WORDS_NUMBER + 2];
         expanded_key[4*i + 3] = temp[3] ^ expanded_key[4*i - 4*ROUND_KEY_WORDS_NUMBER + 3];
 
     }
