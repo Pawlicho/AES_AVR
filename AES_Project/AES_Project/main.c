@@ -6,13 +6,8 @@
  */ 
 
 #include <avr/io.h>
-#include <stdint.h>
-
-void expand_key(uint8_t* key, uint8_t* expanded_key);
-void aes_encrypt(uint8_t* expand_key, uint8_t* plain_text);
-void aes_decrypt(uint8_t* expand_key, uint8_t* plain_text);
-
-
+#include "aes_encryption.h"
+#include "aes_decryption.h"
 
 int main(void)
 {

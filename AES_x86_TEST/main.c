@@ -26,9 +26,9 @@ int main()
     expand_key(testowy_klucz, extended_klucz);
     aes_encrypt(extended_klucz, testowy_tekst);
     
-    //sub jest na pewno zly, mix columns check, shift rows też dobrze, add round key też
-    uint8_t ctr = 0;
-    uint8_t i_ctr = 11;
+    //sub jest na pewno zly, mix columns check, shift rows też dobrze
+    uint8_t ctr = 10;
+    uint8_t i_ctr = 10;
     printf("\n\n");
     for(uint8_t i = 0; i<16; i++)
     {
@@ -40,7 +40,7 @@ int main()
         printf("%x", testowy_tekst[i]);
         
     }
-    mix_columns(testowy_tekst);
+    add_round_key(extended_klucz,&ctr,testowy_tekst);
     printf("\n\n");
     for(uint8_t i = 0; i<16; i++)
     {
@@ -53,7 +53,7 @@ int main()
         
     }
 
-    i_mix_columns(testowy_tekst);
+    i_add_round_key(extended_klucz,&i_ctr,testowy_tekst);
 
     printf("\n\n");
     for(uint8_t i = 0; i<16; i++)

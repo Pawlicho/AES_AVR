@@ -7,6 +7,25 @@ Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "AES_Project", "AES_Project\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BAEFBBF8-92EC-4534-8DAE-1E08B0687CE7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Encryption", "Encryption", "{3515F663-9371-403E-A911-B521FF1FE3EC}"
+	ProjectSection(SolutionItems) = preProject
+		AES_Project\aes_encryption.c = AES_Project\aes_encryption.c
+		AES_Project\aes_encryption.h = AES_Project\aes_encryption.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Decryption", "Decryption", "{46A2B215-79C9-474A-879F-693771BEE955}"
+	ProjectSection(SolutionItems) = preProject
+		AES_Project\aes_decryption.c = AES_Project\aes_decryption.c
+		AES_Project\aes_decryption.h = AES_Project\aes_decryption.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{71319822-05EF-423B-A126-5850459E5939}"
+	ProjectSection(SolutionItems) = preProject
+		AES_Project\aes_common.h = AES_Project\aes_common.h
+		AES_Project\extend_key.c = AES_Project\extend_key.c
+		AES_Project\extend_key.h = AES_Project\extend_key.h
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AVR = Debug|AVR
@@ -20,5 +39,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3515F663-9371-403E-A911-B521FF1FE3EC} = {BAEFBBF8-92EC-4534-8DAE-1E08B0687CE7}
+		{46A2B215-79C9-474A-879F-693771BEE955} = {BAEFBBF8-92EC-4534-8DAE-1E08B0687CE7}
+		{71319822-05EF-423B-A126-5850459E5939} = {BAEFBBF8-92EC-4534-8DAE-1E08B0687CE7}
 	EndGlobalSection
 EndGlobal

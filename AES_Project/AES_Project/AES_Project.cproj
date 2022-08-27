@@ -133,6 +133,15 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="aes_common.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="aes_decryption.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="aes_decryption.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="aes_encryption.c">
       <SubType>compile</SubType>
     </Compile>

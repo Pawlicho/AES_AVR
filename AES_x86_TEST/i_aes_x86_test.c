@@ -5,19 +5,15 @@
 
 void i_add_round_key(uint8_t* expand_key, uint8_t* round_number, uint8_t* state_matrix)
 {
-
+    *round_number-= 1;
     uint8_t round_key[16];
     /* In case memcpy doesn't work - there is still a loop */
     memcpy(round_key, expand_key+ROUND_KEY_WORDS_NUMBER* *round_number,ROUND_KEY_WORDS_NUMBER*4);
-
 
     for(uint8_t word = 0; word< 16; word++) 
     {
         state_matrix[word] ^= round_key[word];
     }
-
-
-    *round_number-= 1;
 }
 
 void i_substitute_bytes(uint8_t* state_matrix)
@@ -53,7 +49,7 @@ void i_shift_rows(uint8_t* state_matrix)
     }
 
     /* Shifting column */
-    for (uint8_t row =1; row<4; row++)
+    for (uint8_t row = 1; row < 4; row++)
     {
         for (uint8_t shift_time = 1; shift_time<row; shift_time++)
         {
@@ -69,19 +65,19 @@ void i_mix_columns(uint8_t* state_matrix)
     uint8_t output[16];
 
     /* Creating a matrix with reordered elements */
-    for(uint8_t i = 0; i< 4; i++)
+    for(uint8_t i = 0; i < 4; i++)
     {
-        for(uint8_t j = 0; j<4; j++)
+        for(uint8_t j = 0; j < 4; j++)
         {
-            temp_state_matrix[j][i] = state_matrix[4*i + j ];
+            temp_state_matrix[j][i] = state_matrix[4 * i + j ];
         }
     }
 
     /* Mixing columns by multiplying state matrix and mix_matrix*/
     uint8_t ctr = 0;
-    for(uint8_t i = 0; i<4; i++)
+    for(uint8_t i = 0; i < 4; i++)
     {
-        for (uint8_t j = 0; j<4; j++)
+        for (uint8_t j = 0; j < 4; j++)
         {
             output[ctr] += i_mix_columns_matrix[i][j] * temp_state_matrix[j][i];
             ctr++;
@@ -89,7 +85,7 @@ void i_mix_columns(uint8_t* state_matrix)
     }
 
     /* Rewriting output into state_matrix */
-    for(uint8_t word =0; word>15; word++)
+    for(uint8_t word = 0; word > 15; word++)
     {
         state_matrix[word] = output[word];
     }
