@@ -153,7 +153,6 @@ void aes_encrypt(uint8_t* expand_key, uint8_t* plain_text)
     /* Initiating */
     uint8_t round_number = 0;
     add_round_key(expand_key, &round_number, plain_text);
-    printf("%u", round_number);
     
 
     for(uint8_t round_ctr = 0; round_ctr< NUM_ROUNDS-1; round_ctr++)

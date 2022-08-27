@@ -6,5 +6,7 @@ aes_decryption.c
 
 aes_encryption.c
 
+aes_test_vector.c
+
 main.c
 

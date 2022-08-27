@@ -148,6 +148,12 @@
     <Compile Include="aes_encryption.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="aes_test_vector.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="aes_test_vector.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
